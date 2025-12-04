@@ -1,0 +1,5 @@
+let mongoose = require('mongoose')
+require('dotenv').config()
+mongoose.connect(process.env.MONGOURL)
+    .then(res => console.log("Mongoose Connect..."))
+    .catch(err => console.log("Mongoose Connection Failed..."))
