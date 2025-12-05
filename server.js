@@ -4,6 +4,7 @@ let User = require('./model')
 let dbConnect = require('./dbConnect')
 let cors = require('cors')
 let jwt = require('jsonwebtoken');
+const { swaggerUi, swaggerSpec } = require("./swagger");
 
 // ➤ Mongoose Connect
 dbConnect;
@@ -11,6 +12,7 @@ dbConnect;
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ➤ LOGIN USER
 app.post("/login", async (req, res) => {
@@ -52,6 +54,7 @@ app.post("/login", async (req, res) => {
 // ➤ CREATE USER
 app.post("/users", async (req, res) => {
     try {
+        console.log(req.body)
         let user = new User(req.body);
         let savedUser = await user.save();
         res.status(201).json({ success: true, data: savedUser });
@@ -114,4 +117,4 @@ app.delete("/users/:id", async (req, res) => {
 /* ----------------------------------------------------- */
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}...`));
